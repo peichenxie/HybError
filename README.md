@@ -13,7 +13,7 @@ def get_max_diff(A: torch.Tensor, B: torch.Tensor):
     return diff.max()
 ```
 
-This MaxDiff has the property that if `eps = get_max_diff(A, B)`, then `torch.allclose(A, B, eps, eps) == True`.
+This MaxDiff has the property that `torch.allclose(A, B, max_diff, max_diff) == True` where `max_diff = get_max_diff(A, B)`, and `torch.allclose(A, B, delta, delta) == False` for all `delta > max_diff`.
 
 ## Mean difference (MeanDiff) between two arrays
 
