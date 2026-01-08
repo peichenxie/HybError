@@ -13,7 +13,13 @@ def get_max_diff(A: torch.Tensor, B: torch.Tensor):
     return diff.max()
 ```
 
-This MaxDiff has the property that `torch.allclose(A, B, max_diff, max_diff) == True` where `max_diff = get_max_diff(A, B)`, and `torch.allclose(A, B, delta, delta) == False` for all `delta > max_diff`.
+This MaxDiff has the property that
+```
+max_diff = get_max_diff(A, B)                                # A and B are close within the absolute and relative tolerance of max_diff
+assert torch.allclose(A, B, rtol=max_diff, atol=max_diff)    # always True
+delta = max_diff - 1e-6                                      # but not within the absolute and relative tolerance of delta for any delta < max_diff
+assert torch.allclose(A, B, rtol=delta, atol=delta) == False # always False
+```
 
 ## Mean difference (MeanDiff) between two arrays
 
